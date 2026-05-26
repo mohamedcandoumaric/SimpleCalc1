@@ -1,7 +1,9 @@
 plugins {
     checkstyle
     java
- }
+    id("com.gradleup.shadow") version "8.3.0"
+
+     }
 
 group = "org.example"
 version = "1.0-SNAPSHOT"
