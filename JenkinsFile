@@ -1,0 +1,57 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Environment Check') {
+            steps {
+                bat 'java -version'
+            }
+        }
+
+        stage('clean'){
+        steps {
+                bat 'gradlew clean'
+        }
+     }
+
+        stage('Build') {
+            steps {
+                bat 'gradlew build'
+            }
+        }
+
+        stage('Test') {
+                    steps {
+                        bat 'gradlew test'
+        }
+        }
+         stage('Checkstyle') {
+                            steps {
+                                bat 'gradlew CheckstyleMain'
+                }
+                }
+                stage('Shadow Jar') {
+                                            steps {
+                                                bat 'gradlew ShadowJar'
+                                }
+                                }
+    }
+
+
+
+     post {
+
+            always {
+                echo 'Build pipeline completed. Check if it was a success or if the build failed'
+            }
+
+            failure {
+                echo 'Build failed. Please check the logs for details.'
+            }
+
+            success {
+                echo 'Build succeeded. All tests passed and checkstyle checks are clear.'
+            }
+        }
+}
